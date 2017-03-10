@@ -11,6 +11,8 @@
 		96B785CF1E72D42A00ECABBC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B785CE1E72D42A00ECABBC /* ViewController.swift */; };
 		96B785D11E72D42A00ECABBC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 96B785D01E72D42A00ECABBC /* Assets.xcassets */; };
 		96B785D41E72D42A00ECABBC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96B785D21E72D42A00ECABBC /* Main.storyboard */; };
+		96B785DC1E72D51900ECABBC /* TextViewVoiceFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B785DB1E72D51900ECABBC /* TextViewVoiceFeedback.swift */; };
+		96B785DE1E72EB7900ECABBC /* OpenDyslexic-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 96B785DD1E72EB7900ECABBC /* OpenDyslexic-Regular.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +22,8 @@
 		96B785D01E72D42A00ECABBC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		96B785D31E72D42A00ECABBC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		96B785D51E72D42A00ECABBC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		96B785DB1E72D51900ECABBC /* TextViewVoiceFeedback.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextViewVoiceFeedback.swift; sourceTree = "<group>"; };
+		96B785DD1E72EB7900ECABBC /* OpenDyslexic-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenDyslexic-Regular.otf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,7 +60,9 @@
 				96B785CE1E72D42A00ECABBC /* ViewController.swift */,
 				96B785D01E72D42A00ECABBC /* Assets.xcassets */,
 				96B785D21E72D42A00ECABBC /* Main.storyboard */,
+				96B785DB1E72D51900ECABBC /* TextViewVoiceFeedback.swift */,
 				96B785D51E72D42A00ECABBC /* Info.plist */,
+				96B785DD1E72EB7900ECABBC /* OpenDyslexic-Regular.otf */,
 			);
 			path = TypeFeedback;
 			sourceTree = "<group>";
@@ -121,6 +127,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96B785DE1E72EB7900ECABBC /* OpenDyslexic-Regular.otf in Resources */,
 				96B785D11E72D42A00ECABBC /* Assets.xcassets in Resources */,
 				96B785D41E72D42A00ECABBC /* Main.storyboard in Resources */,
 			);
@@ -133,6 +140,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96B785DC1E72D51900ECABBC /* TextViewVoiceFeedback.swift in Sources */,
 				96B785CF1E72D42A00ECABBC /* ViewController.swift in Sources */,
 				96B785CD1E72D42A00ECABBC /* AppDelegate.swift in Sources */,
 			);
@@ -289,6 +297,7 @@
 				96B785DA1E72D42A00ECABBC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

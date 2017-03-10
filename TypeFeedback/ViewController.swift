@@ -10,9 +10,20 @@ import Cocoa
 
 class ViewController: NSViewController {
 
+	@IBOutlet var textView: NSTextView!
+	
+	let textViewDelegate = TextViewVoiceFeedback()
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-
+		textView.delegate = textViewDelegate
+		
+		textView.font = NSFont(name: "OpenDyslexic", size: 20)
+		
+		if let textViewContents = NSUserDefaultsController.shared().defaults.string(forKey: "TextViewContents") {
+			textView.string = textViewContents
+		}
+		
 		// Do any additional setup after loading the view.
 	}
 
