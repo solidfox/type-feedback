@@ -14,6 +14,7 @@
 		96B785DC1E72D51900ECABBC /* TextViewVoiceFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B785DB1E72D51900ECABBC /* TextViewVoiceFeedback.swift */; };
 		96B785DE1E72EB7900ECABBC /* OpenDyslexic-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 96B785DD1E72EB7900ECABBC /* OpenDyslexic-Regular.otf */; };
 		96C03B631E74036A004BAC05 /* WindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C03B621E74036A004BAC05 /* WindowController.swift */; };
+		96EC59042254262500A044D6 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 96EC59032254262500A044D6 /* Podfile */; };
 		C2F03F84BF204A74F94626AE /* Pods_TypeFeedback.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F7FD825635F143935AD5EFE /* Pods_TypeFeedback.framework */; };
 /* End PBXBuildFile section */
 
@@ -29,6 +30,7 @@
 		96B785DB1E72D51900ECABBC /* TextViewVoiceFeedback.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextViewVoiceFeedback.swift; sourceTree = "<group>"; };
 		96B785DD1E72EB7900ECABBC /* OpenDyslexic-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenDyslexic-Regular.otf"; sourceTree = "<group>"; };
 		96C03B621E74036A004BAC05 /* WindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowController.swift; sourceTree = "<group>"; };
+		96EC59032254262500A044D6 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; };
 		D85219FC36B2D6254A5E91CC /* Pods-TypeFeedback.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TypeFeedback.release.xcconfig"; path = "Pods/Target Support Files/Pods-TypeFeedback/Pods-TypeFeedback.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -65,6 +67,7 @@
 		96B785CB1E72D42A00ECABBC /* TypeFeedback */ = {
 			isa = PBXGroup;
 			children = (
+				96EC59032254262500A044D6 /* Podfile */,
 				96B785CC1E72D42A00ECABBC /* AppDelegate.swift */,
 				96B785CE1E72D42A00ECABBC /* ViewController.swift */,
 				96C03B621E74036A004BAC05 /* WindowController.swift */,
@@ -106,7 +109,6 @@
 				96B785C61E72D42A00ECABBC /* Frameworks */,
 				96B785C71E72D42A00ECABBC /* Resources */,
 				C20F9E6F8BFBA49C5B96B413 /* [CP] Embed Pods Frameworks */,
-				D1D607C339D686DEDBBB0AE9 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -139,6 +141,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -159,6 +162,7 @@
 			files = (
 				96B785DE1E72EB7900ECABBC /* OpenDyslexic-Regular.otf in Resources */,
 				96B785D11E72D42A00ECABBC /* Assets.xcassets in Resources */,
+				96EC59042254262500A044D6 /* Podfile in Resources */,
 				96B785D41E72D42A00ECABBC /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -172,13 +176,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TypeFeedback-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C20F9E6F8BFBA49C5B96B413 /* [CP] Embed Pods Frameworks */ = {
@@ -187,28 +194,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TypeFeedback/Pods-TypeFeedback-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/DynamicColor/DynamicColor.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DynamicColor.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TypeFeedback/Pods-TypeFeedback-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D1D607C339D686DEDBBB0AE9 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TypeFeedback/Pods-TypeFeedback-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TypeFeedback/Pods-TypeFeedback-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -338,9 +333,10 @@
 				DEVELOPMENT_TEAM = M2N24428T4;
 				INFOPLIST_FILE = TypeFeedback/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.schlaug.TypeFeedback;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -353,9 +349,10 @@
 				DEVELOPMENT_TEAM = M2N24428T4;
 				INFOPLIST_FILE = TypeFeedback/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.schlaug.TypeFeedback;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

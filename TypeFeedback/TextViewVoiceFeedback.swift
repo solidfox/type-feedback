@@ -14,10 +14,10 @@ class TextViewVoiceFeedback: NSObject, NSTextViewDelegate {
 	let speechSynthesizer = NSSpeechSynthesizer()
 	
 	override init() {
-		let voices = NSSpeechSynthesizer.availableVoices()
-		let languages = voices.map { NSLocale(localeIdentifier: NSSpeechSynthesizer.attributes(forVoice: $0)[NSVoiceLocaleIdentifier] as! String) }
+		let voices = NSSpeechSynthesizer.availableVoices
+		let languages = voices.map { NSLocale(localeIdentifier: NSSpeechSynthesizer.attributes(forVoice: $0)[NSSpeechSynthesizer.VoiceAttributeKey.localeIdentifier] as! String) }
 		let swedishIndex = languages.enumerated().filter { (index, locale:NSLocale) -> Bool in
-			locale.languageCode == "sv"
+			locale.localeIdentifier == "sv_SE"
 		}.first!.offset
 		let swedishVoice = voices[swedishIndex]
 		speechSynthesizer.setVoice(swedishVoice)
@@ -26,8 +26,8 @@ class TextViewVoiceFeedback: NSObject, NSTextViewDelegate {
 	func textView(_ textView: NSTextView, shouldChangeTextIn affectedCharRange: NSRange, replacementString: String?) -> Bool {
 		
 		if let newText = replacementString {
-			if newText.characters.count == 1 {
-				let char = newText.characters.first!
+			if newText.count == 1 {
+				let char = newText.first!
 				switch char {
 				case ".":
 					let lastSentence = findLastSentenceIn(textView: textView, endingAtIndex: affectedCharRange.location)
@@ -53,7 +53,7 @@ class TextViewVoiceFeedback: NSObject, NSTextViewDelegate {
 	
 	func textDidChange(_ notification: Notification) {
 		let textView = notification.object as! NSTextView
-		NSUserDefaultsController.shared().defaults.set(textView.textStorage?.string, forKey: "TextViewContents")
+		NSUserDefaultsController.shared.defaults.set(textView.textStorage?.string, forKey: "TextViewContents")
 	}
 	
 	func findLastWordIn(textView:NSTextView, endingAtIndex endIndex:Int) -> String {
@@ -67,15 +67,15 @@ class TextViewVoiceFeedback: NSObject, NSTextViewDelegate {
 	func findLastSentenceIn(textView:NSTextView, endingAtIndex endIndex:Int) -> String {
 		let string = textView.textStorage!.string
 		let upperBound = string.index(string.startIndex, offsetBy: endIndex)
-		let truncatedString = textView.textStorage!.string.substring(to: upperBound)
+		let truncatedString = textView.textStorage!.string[..<upperBound]
 		
-		let reversedString = String(truncatedString.characters.reversed())
+		let reversedString = String(truncatedString.reversed())
 		
-		let lowerBound = reversedString.range(of: " .")?.lowerBound ?? truncatedString.startIndex
+		let lowerBound = reversedString.range(of: ".")?.lowerBound ?? reversedString.endIndex
 		
-		let sentence = truncatedString.substring(from: lowerBound)
+		let sentence = reversedString[..<lowerBound].reversed()
 		
-		return sentence
+		return String(sentence)
 	}
 	
 }

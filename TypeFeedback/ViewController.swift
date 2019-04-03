@@ -20,7 +20,7 @@ class ViewController: NSViewController {
 		
 		textView.font = NSFont(name: "OpenDyslexic", size: 20)
 		
-		if let textViewContents = NSUserDefaultsController.shared().defaults.string(forKey: "TextViewContents") {
+		if let textViewContents = NSUserDefaultsController.shared.defaults.string(forKey: "TextViewContents") {
 			textView.string = textViewContents
 		}
 		
