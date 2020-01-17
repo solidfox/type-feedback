@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		965A3FCF23D1B66300C6A961 /* PhonemPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965A3FCE23D1B66300C6A961 /* PhonemPlayer.swift */; };
+		965A3FD123D1B77000C6A961 /* Phonems in Resources */ = {isa = PBXBuildFile; fileRef = 965A3FD023D1B77000C6A961 /* Phonems */; };
 		96B785CD1E72D42A00ECABBC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B785CC1E72D42A00ECABBC /* AppDelegate.swift */; };
 		96B785CF1E72D42A00ECABBC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B785CE1E72D42A00ECABBC /* ViewController.swift */; };
 		96B785D11E72D42A00ECABBC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 96B785D01E72D42A00ECABBC /* Assets.xcassets */; };
@@ -21,6 +23,8 @@
 /* Begin PBXFileReference section */
 		1F7FD825635F143935AD5EFE /* Pods_TypeFeedback.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TypeFeedback.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		665D0435624947F72A8CF045 /* Pods-TypeFeedback.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TypeFeedback.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TypeFeedback/Pods-TypeFeedback.debug.xcconfig"; sourceTree = "<group>"; };
+		965A3FCE23D1B66300C6A961 /* PhonemPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhonemPlayer.swift; sourceTree = "<group>"; };
+		965A3FD023D1B77000C6A961 /* Phonems */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Phonems; path = TypeFeedback/Phonems; sourceTree = "<group>"; };
 		96B785C91E72D42A00ECABBC /* TypeFeedback.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TypeFeedback.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		96B785CC1E72D42A00ECABBC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		96B785CE1E72D42A00ECABBC /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -49,6 +53,7 @@
 		96B785C01E72D42A00ECABBC = {
 			isa = PBXGroup;
 			children = (
+				965A3FD023D1B77000C6A961 /* Phonems */,
 				96B785CB1E72D42A00ECABBC /* TypeFeedback */,
 				96B785CA1E72D42A00ECABBC /* Products */,
 				F333743CE013C4916226BD3B /* Pods */,
@@ -71,6 +76,7 @@
 				96B785CC1E72D42A00ECABBC /* AppDelegate.swift */,
 				96B785CE1E72D42A00ECABBC /* ViewController.swift */,
 				96C03B621E74036A004BAC05 /* WindowController.swift */,
+				965A3FCE23D1B66300C6A961 /* PhonemPlayer.swift */,
 				96B785D01E72D42A00ECABBC /* Assets.xcassets */,
 				96B785D21E72D42A00ECABBC /* Main.storyboard */,
 				96B785DB1E72D51900ECABBC /* TextViewVoiceFeedback.swift */,
@@ -164,6 +170,7 @@
 				96B785D11E72D42A00ECABBC /* Assets.xcassets in Resources */,
 				96EC59042254262500A044D6 /* Podfile in Resources */,
 				96B785D41E72D42A00ECABBC /* Main.storyboard in Resources */,
+				965A3FD123D1B77000C6A961 /* Phonems in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -217,6 +224,7 @@
 				96C03B631E74036A004BAC05 /* WindowController.swift in Sources */,
 				96B785CF1E72D42A00ECABBC /* ViewController.swift in Sources */,
 				96B785CD1E72D42A00ECABBC /* AppDelegate.swift in Sources */,
+				965A3FCF23D1B66300C6A961 /* PhonemPlayer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

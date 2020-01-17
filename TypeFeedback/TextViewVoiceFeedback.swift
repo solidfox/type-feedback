@@ -12,6 +12,7 @@ import Cocoa
 class TextViewVoiceFeedback: NSObject, NSTextViewDelegate {
 	
 	let speechSynthesizer = NSSpeechSynthesizer()
+	let phonemPlayer = PhonemPlayer()
 	
 	override init() {
 		let voices = NSSpeechSynthesizer.availableVoices
@@ -43,7 +44,9 @@ class TextViewVoiceFeedback: NSObject, NSTextViewDelegate {
 					let lastWord = findLastWordIn(textView: textView, endingAtIndex: affectedCharRange.location)
 					speechSynthesizer.startSpeaking(lastWord)
 				default:
-					speechSynthesizer.startSpeaking(newText.lowercased())
+					if newText.count != 1 || !phonemPlayer.play(character: newText.lowercased().first!) {
+						speechSynthesizer.startSpeaking(newText.lowercased())
+					}
 				}
 			}
 		}
