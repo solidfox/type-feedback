@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15705"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -670,6 +670,35 @@
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="480" height="468"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+                        <toolbar key="toolbar" implicitIdentifier="2CF4E7B0-164C-4443-B3BA-41D1B5D6A48D" autosavesConfiguration="NO" displayMode="iconOnly" sizeMode="regular" id="uiu-z0-QMo">
+                            <allowedToolbarItems>
+                                <toolbarItem implicitItemIdentifier="NSToolbarShowColorsItem" id="JZL-p6-3Dc"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarShowFontsItem" id="CRW-Kq-LeF"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarPrintItem" id="ElB-zQ-dEn"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="k6V-of-0gg"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="3ne-qP-KYJ"/>
+                                <toolbarItem implicitItemIdentifier="00B0854D-F68D-4075-8A48-EA7D140ADC9B" label="Uttala Bokstavens..." paletteLabel="Uttala Bokstavens..." sizingBehavior="auto" id="ngz-J5-soO">
+                                    <nil key="toolTip"/>
+                                    <segmentedControl key="view" verticalHuggingPriority="750" id="cpu-dU-anz">
+                                        <rect key="frame" x="0.0" y="14" width="118" height="24"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <segmentedCell key="cell" borderStyle="border" alignment="left" segmentDistribution="fillEqually" style="texturedSquare" trackingMode="selectOne" id="dLb-4i-vTh">
+                                            <font key="font" metaFont="system"/>
+                                            <segments>
+                                                <segment label="Ljud"/>
+                                                <segment label="Namn" selected="YES" tag="1"/>
+                                            </segments>
+                                        </segmentedCell>
+                                        <connections>
+                                            <action selector="onSpellingSegmentedControlChange:" target="B8D-0N-5wS" id="O4p-93-gZL"/>
+                                        </connections>
+                                    </segmentedControl>
+                                </toolbarItem>
+                            </allowedToolbarItems>
+                            <defaultToolbarItems>
+                                <toolbarItem reference="ngz-J5-soO"/>
+                            </defaultToolbarItems>
+                        </toolbar>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
                                 <color key="value" red="0.9991468791" green="1" blue="0.75751726019999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -680,6 +709,7 @@
                         </connections>
                     </window>
                     <connections>
+                        <outlet property="spellingSegmentedControl" destination="cpu-dU-anz" id="mem-kC-EfF"/>
                         <segue destination="XfG-lQ-9wD" kind="relationship" relationship="window.shadowedContentViewController" id="cq2-FE-JQM"/>
                     </connections>
                 </windowController>

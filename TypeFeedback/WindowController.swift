@@ -10,7 +10,12 @@ import Cocoa
 import DynamicColor
 
 class WindowController: NSWindowController, NSWindowDelegate {
-
+	@IBAction func onSpellingSegmentedControlChange(_ sender: NSSegmentedControl) {
+		NSUserDefaultsController.shared.defaults.set(sender.selectedSegment, forKey: AppDefaults.keys.spellingMode.rawValue)
+		NotificationCenter.default.post(Notification(name: .spellingModeUpdated))
+	}
+	@IBOutlet weak var spellingSegmentedControl: NSSegmentedControl!
+	
     override func windowDidLoad() {
         super.windowDidLoad()
 		
@@ -30,6 +35,8 @@ class WindowController: NSWindowController, NSWindowDelegate {
 			}
 			window.delegate = self
 		}
+		
+		spellingSegmentedControl.selectedSegment = (NSUserDefaultsController.shared.defaults.integer(forKey: AppDefaults.keys.spellingMode.rawValue))
     
         // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
     }

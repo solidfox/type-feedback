@@ -43,6 +43,10 @@ class PhonemPlayer {
 	
 	func play(character: Character) -> Bool {
 		if let audioPlayer = phonems[character] {
+			if audioPlayer.isPlaying {
+				audioPlayer.pause()
+			}
+			audioPlayer.currentTime = 0
 			audioPlayer.play()
 			return true
 		} else {

@@ -9,10 +9,16 @@
 import Foundation
 import Cocoa
 
+enum SpellingMode:Int {
+	case sound
+	case name
+}
+
 class TextViewVoiceFeedback: NSObject, NSTextViewDelegate {
 	
 	let speechSynthesizer = NSSpeechSynthesizer()
 	let phonemPlayer = PhonemPlayer()
+	var spellingMode: SpellingMode? = nil
 	
 	override init() {
 		let voices = NSSpeechSynthesizer.availableVoices
@@ -22,6 +28,20 @@ class TextViewVoiceFeedback: NSObject, NSTextViewDelegate {
 		}.first!.offset
 		let swedishVoice = voices[swedishIndex]
 		speechSynthesizer.setVoice(swedishVoice)
+		
+		super.init()
+		
+		loadDefaults()
+		NotificationCenter.default.addObserver(self, selector: #selector(onSpellingModeUpdated(_:)), name: .spellingModeUpdated, object: nil)
+	}
+	
+	@objc func onSpellingModeUpdated(_ notification: Notification) {
+		loadDefaults()
+	}
+	
+	func loadDefaults() {
+		let spellingModeRaw = NSUserDefaultsController.shared.defaults.integer(forKey: AppDefaults.keys.spellingMode.rawValue)
+		spellingMode = SpellingMode(rawValue: spellingModeRaw)
 	}
 	
 	func textView(_ textView: NSTextView, shouldChangeTextIn affectedCharRange: NSRange, replacementString: String?) -> Bool {
@@ -44,7 +64,7 @@ class TextViewVoiceFeedback: NSObject, NSTextViewDelegate {
 					let lastWord = findLastWordIn(textView: textView, endingAtIndex: affectedCharRange.location)
 					speechSynthesizer.startSpeaking(lastWord)
 				default:
-					if newText.count != 1 || !phonemPlayer.play(character: newText.lowercased().first!) {
+					if spellingMode == SpellingMode.name || !phonemPlayer.play(character: newText.lowercased().first!) {
 						speechSynthesizer.startSpeaking(newText.lowercased())
 					}
 				}

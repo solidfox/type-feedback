@@ -16,6 +16,8 @@
 		96B785DC1E72D51900ECABBC /* TextViewVoiceFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B785DB1E72D51900ECABBC /* TextViewVoiceFeedback.swift */; };
 		96B785DE1E72EB7900ECABBC /* OpenDyslexic-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 96B785DD1E72EB7900ECABBC /* OpenDyslexic-Regular.otf */; };
 		96C03B631E74036A004BAC05 /* WindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C03B621E74036A004BAC05 /* WindowController.swift */; };
+		96C5B56723D1CE550031566B /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C5B56623D1CE550031566B /* Defaults.swift */; };
+		96C5B56923D1DE350031566B /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C5B56823D1DE350031566B /* Notifications.swift */; };
 		96EC59042254262500A044D6 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 96EC59032254262500A044D6 /* Podfile */; };
 		C2F03F84BF204A74F94626AE /* Pods_TypeFeedback.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F7FD825635F143935AD5EFE /* Pods_TypeFeedback.framework */; };
 /* End PBXBuildFile section */
@@ -34,6 +36,8 @@
 		96B785DB1E72D51900ECABBC /* TextViewVoiceFeedback.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextViewVoiceFeedback.swift; sourceTree = "<group>"; };
 		96B785DD1E72EB7900ECABBC /* OpenDyslexic-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenDyslexic-Regular.otf"; sourceTree = "<group>"; };
 		96C03B621E74036A004BAC05 /* WindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowController.swift; sourceTree = "<group>"; };
+		96C5B56623D1CE550031566B /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
+		96C5B56823D1DE350031566B /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		96EC59032254262500A044D6 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; };
 		D85219FC36B2D6254A5E91CC /* Pods-TypeFeedback.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TypeFeedback.release.xcconfig"; path = "Pods/Target Support Files/Pods-TypeFeedback/Pods-TypeFeedback.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -76,6 +80,8 @@
 				96B785CC1E72D42A00ECABBC /* AppDelegate.swift */,
 				96B785CE1E72D42A00ECABBC /* ViewController.swift */,
 				96C03B621E74036A004BAC05 /* WindowController.swift */,
+				96C5B56623D1CE550031566B /* Defaults.swift */,
+				96C5B56823D1DE350031566B /* Notifications.swift */,
 				965A3FCE23D1B66300C6A961 /* PhonemPlayer.swift */,
 				96B785D01E72D42A00ECABBC /* Assets.xcassets */,
 				96B785D21E72D42A00ECABBC /* Main.storyboard */,
@@ -221,8 +227,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				96B785DC1E72D51900ECABBC /* TextViewVoiceFeedback.swift in Sources */,
+				96C5B56923D1DE350031566B /* Notifications.swift in Sources */,
 				96C03B631E74036A004BAC05 /* WindowController.swift in Sources */,
 				96B785CF1E72D42A00ECABBC /* ViewController.swift in Sources */,
+				96C5B56723D1CE550031566B /* Defaults.swift in Sources */,
 				96B785CD1E72D42A00ECABBC /* AppDelegate.swift in Sources */,
 				965A3FCF23D1B66300C6A961 /* PhonemPlayer.swift in Sources */,
 			);
