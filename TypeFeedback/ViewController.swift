@@ -8,12 +8,12 @@
 
 import Cocoa
 
-class ViewController: NSViewController {
+class ViewController: NSViewController, NSToolbarDelegate {
 
 	@IBOutlet var textView: NSTextView!
 	
 	let textViewDelegate = TextViewVoiceFeedback()
-	
+    
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		textView.delegate = textViewDelegate
@@ -33,6 +33,7 @@ class ViewController: NSViewController {
 		}
 	}
 
+    
 
 }
 

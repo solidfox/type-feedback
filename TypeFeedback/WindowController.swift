@@ -15,6 +15,21 @@ class WindowController: NSWindowController, NSWindowDelegate {
 		NotificationCenter.default.post(Notification(name: .spellingModeUpdated))
 	}
 	@IBOutlet weak var spellingSegmentedControl: NSSegmentedControl!
+    
+    @IBAction func print(_ sender: Any) {
+        guard let textView = (self.contentViewController as? ViewController)?.textView else { return }
+            
+            let originalAppearance = textView.effectiveAppearance
+            textView.appearance = NSAppearance(named: .aqua)
+            
+            let printOperation = NSPrintOperation(view: textView)
+            printOperation.printInfo = NSPrintInfo.shared
+            printOperation.showsPrintPanel = true
+            
+            printOperation.run()
+            
+            textView.appearance = originalAppearance
+    }
 	
     override func windowDidLoad() {
         super.windowDidLoad()
@@ -26,7 +41,7 @@ class WindowController: NSWindowController, NSWindowDelegate {
 				darkMode = window.effectiveAppearance.name == .darkAqua
 			}
 			
-			let lightBgHexColor:UInt32 = 0xfcedc7
+			let lightBgHexColor:UInt64 = 0xfcedc7
 			
 			if !darkMode {
 				window.backgroundColor = DynamicColor(hex:lightBgHexColor)

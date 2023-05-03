@@ -21,6 +21,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		// Insert code here to tear down your application
 	}
 
-
+    @IBAction func printFromMenu(_ sender: Any) {
+        if let mainWindowController = NSApp.mainWindow?.windowController as? WindowController {
+            mainWindowController.print(sender)
+        }
+    }
+    
 }
 
