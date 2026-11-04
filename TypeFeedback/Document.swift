@@ -153,7 +153,11 @@ class Document: NSDocument {
 			return
 		}
 		let name = DocumentNaming.name(fromText: textStorage.string) ?? DocumentNaming.dateName()
-		save(to: library.unusedURL(named: name), ofType: fileType ?? "public.plain-text", for: .saveAsOperation, completionHandler: finish)
+		let url = library.reserveUnusedURL(named: name)
+		save(to: url, ofType: fileType ?? "public.plain-text", for: .saveAsOperation) { error in
+			library.releaseURL(url)
+			finish(error)
+		}
 	}
 
 	@objc private func documentTextDidChange(_ notification: Notification) {
@@ -184,8 +188,9 @@ class Document: NSDocument {
 			DocumentNaming.isDateName(url.deletingPathExtension().lastPathComponent),
 			let name = DocumentNaming.name(fromText: textStorage.string) else { return }
 		isRenaming = true
-		let newURL = DocumentLibrary.shared.unusedURL(named: name, in: url.deletingLastPathComponent())
+		let newURL = DocumentLibrary.shared.reserveUnusedURL(named: name, in: url.deletingLastPathComponent())
 		move(to: newURL) { error in
+			DocumentLibrary.shared.releaseURL(newURL)
 			self.isRenaming = false
 			self.automaticRenameFailed = error != nil
 			DocumentLibrary.shared.setNeedsReload()

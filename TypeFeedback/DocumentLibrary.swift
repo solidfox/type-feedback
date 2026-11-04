@@ -131,19 +131,29 @@ final class DocumentLibrary {
 		}
 	}
 
-	/// A file name in `folder` (the library folder by default) that no other text uses yet: "Name.txt", "Name 2.txt", …
-	func unusedURL(named name: String, in folder: URL? = nil) -> URL {
+	/// File names handed out for saves and renames that haven't reached the disk yet. Saving or moving onto an existing
+	/// file replaces it, so two texts named at the same moment must not get the same name.
+	private var reservedURLs = Set<URL>()
+
+	/// Reserves a file name in `folder` (the library folder by default) that no other text uses: "Name.txt", "Name 2.txt", …
+	/// Call `releaseURL` once the save or move into it has finished.
+	func reserveUnusedURL(named name: String, in folder: URL? = nil) -> URL {
 		let folder = folder ?? folderURL
 		var number = 1
 		while true {
 			let fileName = number == 1 ? name : "\(name) \(number)"
 			let url = folder.appendingPathComponent(fileName).appendingPathExtension("txt")
 			let iCloudPlaceholder = folder.appendingPathComponent(".\(url.lastPathComponent).icloud")
-			if !FileManager.default.fileExists(atPath: url.path) && !FileManager.default.fileExists(atPath: iCloudPlaceholder.path) {
+			if !reservedURLs.contains(url.standardizedFileURL) && !FileManager.default.fileExists(atPath: url.path) && !FileManager.default.fileExists(atPath: iCloudPlaceholder.path) {
+				reservedURLs.insert(url.standardizedFileURL)
 				return url
 			}
 			number += 1
 		}
+	}
+
+	func releaseURL(_ url: URL) {
+		reservedURLs.remove(url.standardizedFileURL)
 	}
 
 	/// Opens a text, or brings its window to the front if it is already open.
