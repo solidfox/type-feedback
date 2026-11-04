@@ -21,18 +21,38 @@ class TextViewVoiceFeedback: NSObject, NSTextViewDelegate {
 	var spellingMode: SpellingMode? = nil
 	
 	override init() {
-		let voices = NSSpeechSynthesizer.availableVoices
-		let languages = voices.map { NSLocale(localeIdentifier: NSSpeechSynthesizer.attributes(forVoice: $0)[NSSpeechSynthesizer.VoiceAttributeKey.localeIdentifier] as! String) }
-		let swedishIndex = languages.enumerated().filter { (index, locale:NSLocale) -> Bool in
-			locale.localeIdentifier == "sv_SE"
-		}.first!.offset
-		let swedishVoice = voices[swedishIndex]
-		speechSynthesizer.setVoice(swedishVoice)
+		if let swedishVoice = TextViewVoiceFeedback.bestSwedishVoice() {
+			speechSynthesizer.setVoice(swedishVoice)
+		}
 		
 		super.init()
 		
 		loadDefaults()
 		NotificationCenter.default.addObserver(self, selector: #selector(onSpellingModeUpdated(_:)), name: .spellingModeUpdated, object: nil)
+	}
+	
+	/// The best installed Swedish voice: Sweden before other Swedish locales,
+	/// then premium/enhanced (downloaded) voices before compact ones.
+	/// Nil if no Swedish voice is installed; the default voice is used then.
+	static func bestSwedishVoice() -> NSSpeechSynthesizer.VoiceName? {
+		func locale(of voice: NSSpeechSynthesizer.VoiceName) -> String {
+			let attributes = NSSpeechSynthesizer.attributes(forVoice: voice)
+			let identifier = attributes[.localeIdentifier] as? String ?? ""
+			return identifier.replacingOccurrences(of: "-", with: "_")
+		}
+		func rank(of voice: NSSpeechSynthesizer.VoiceName) -> Int {
+			let id = voice.rawValue.lowercased()
+			let country = locale(of: voice) == "sv_SE" ? 10 : 0
+			if id.contains("premium") { return country + 3 }
+			if id.contains("enhanced") { return country + 2 }
+			if id.contains("compact") { return country }
+			return country + 1
+		}
+		let swedish = NSSpeechSynthesizer.availableVoices.filter {
+			let language = locale(of: $0)
+			return language == "sv" || language.hasPrefix("sv_")
+		}
+		return swedish.max { rank(of: $0) < rank(of: $1) }
 	}
 	
 	@objc func onSpellingModeUpdated(_ notification: Notification) {
