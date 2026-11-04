@@ -1,6 +1,6 @@
 # Uncomment the next line to define a global platform for your project
 # platform :ios, '9.0'
-platform :macos, '12.0'
+platform :macos, '10.13'
 source 'https://github.com/CocoaPods/Specs.git'
 
 target 'TypeFeedback' do
@@ -12,11 +12,16 @@ target 'TypeFeedback' do
 
 end
 
-# Xcode no longer builds for macOS older than 12.0, so lift pods that ask for less.
+# Keep the Intel build compatible with High Sierra; Apple silicon starts at Big Sur.
+# Xcode 27's SDK range check is an error by default, but its tools still build 10.13.
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
-      config.build_settings['MACOSX_DEPLOYMENT_TARGET'] = '12.0'
+      config.build_settings['ARCHS'] = 'arm64 x86_64'
+      config.build_settings['ONLY_ACTIVE_ARCH'] = 'NO'
+      config.build_settings['MACOSX_DEPLOYMENT_TARGET'] = '10.13'
+      config.build_settings['MACOSX_DEPLOYMENT_TARGET[arch=arm64]'] = '11.0'
+      config.build_settings['__DIAGNOSE_INVALID_DEPLOYMENT_TARGET_AS_ERROR'] = 'NO'
     end
   end
 end

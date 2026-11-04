@@ -14,21 +14,6 @@ class WindowController: NSWindowController, NSWindowDelegate {
 		NotificationCenter.default.post(Notification(name: .spellingModeUpdated))
 	}
 	@IBOutlet weak var spellingSegmentedControl: NSSegmentedControl!
-    
-    @IBAction func print(_ sender: Any) {
-        guard let textView = textViewController?.textView else { return }
-            
-            let originalAppearance = textView.effectiveAppearance
-            textView.appearance = NSAppearance(named: .aqua)
-            
-            let printOperation = NSPrintOperation(view: textView)
-            printOperation.printInfo = NSPrintInfo.shared
-            printOperation.showsPrintPanel = true
-            
-            printOperation.run()
-            
-            textView.appearance = originalAppearance
-    }
 	
 	/// The text side of the window. The window's content is a split view with the documents sidebar beside it.
 	private(set) var textViewController: ViewController?
@@ -73,4 +58,33 @@ class WindowController: NSWindowController, NSWindowDelegate {
 	func showSpellingMode() {
 		spellingSegmentedControl.selectedSegment = (NSUserDefaultsController.shared.defaults.integer(forKey: AppDefaults.keys.spellingMode.rawValue))
 	}
+}
+
+/// The toolbar's print button. Its "printer" image is an SF Symbol, which macOS before 11 does not have,
+/// so older Macs get a printer drawn here instead of an empty button.
+class PrintToolbarItem: NSToolbarItem {
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		if #available(macOS 11.0, *) { return }
+		image = PrintToolbarItem.drawnPrinter
+	}
+
+	static let drawnPrinter: NSImage = {
+		let image = NSImage(size: NSSize(width: 18, height: 16), flipped: false) { _ in
+			NSColor.black.set()
+			// Printer body, with a slot cut out where the printed page comes out.
+			NSBezierPath(roundedRect: NSRect(x: 1, y: 4.5, width: 16, height: 7), xRadius: 1.5, yRadius: 1.5).fill()
+			NSRect(x: 4, y: 0, width: 10, height: 8).fill(using: .clear)
+			// Paper going in at the top and coming out at the bottom.
+			let paperIn = NSBezierPath(rect: NSRect(x: 5.5, y: 11.5, width: 7, height: 3.5))
+			let paperOut = NSBezierPath(rect: NSRect(x: 5.5, y: 1.5, width: 7, height: 6))
+			paperIn.lineWidth = 1
+			paperOut.lineWidth = 1
+			paperIn.stroke()
+			paperOut.stroke()
+			return true
+		}
+		image.isTemplate = true
+		return image
+	}()
 }
