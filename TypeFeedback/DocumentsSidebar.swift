@@ -174,6 +174,8 @@ final class DocumentsSidebarViewController: NSViewController, NSTableViewDataSou
 		let row = tableView.clickedRow
 		guard items.indices.contains(row), let window = view.window else { return }
 		let item = items[row]
+		// An open text may be renamed while the question is showing; then trash the document, not the old file name.
+		let openDocument = NSDocumentController.shared.document(for: item.url)
 		let alert = NSAlert()
 		alert.alertStyle = .warning
 		alert.messageText = "Vill du flytta ”\(item.name)” till papperskorgen?"
@@ -184,7 +186,10 @@ final class DocumentsSidebarViewController: NSViewController, NSTableViewDataSou
 		trashButton.keyEquivalent = ""
 		cancelButton.keyEquivalent = "\u{1b}"
 		alert.beginSheetModal(for: window) { response in
-			if response == .alertFirstButtonReturn {
+			guard response == .alertFirstButtonReturn else { return }
+			if let document = openDocument {
+				DocumentLibrary.shared.moveToTrash(document)
+			} else {
 				DocumentLibrary.shared.moveToTrash(item)
 			}
 		}

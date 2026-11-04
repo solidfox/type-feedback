@@ -175,46 +175,54 @@ final class DocumentLibrary {
 			}
 			return
 		}
-		// A coordinated read waits until iCloud has downloaded the text.
+		// A coordinated read waits until iCloud has downloaded the text, and tells where it is now.
 		try? FileManager.default.startDownloadingUbiquitousItem(at: item.url)
 		DispatchQueue.global(qos: .userInitiated).async {
 			var coordinationError: NSError?
-			NSFileCoordinator(filePresenter: nil).coordinate(readingItemAt: item.url, options: [], error: &coordinationError) { _ in }
+			var downloadedURL = item.url
+			NSFileCoordinator(filePresenter: nil).coordinate(readingItemAt: item.url, options: [], error: &coordinationError) { url in
+				downloadedURL = url
+			}
 			DispatchQueue.main.async {
 				if let error = coordinationError {
 					NSApp.presentError(error)
 				} else {
-					self.open(Item(url: item.url, name: item.name, modificationDate: item.modificationDate, isDownloaded: true))
+					self.open(Item(url: downloadedURL, name: item.name, modificationDate: item.modificationDate, isDownloaded: true))
 				}
 			}
 		}
 	}
 
-	/// Moves a text to the Trash, saving and closing it first if it is open, so the Trash holds the latest writing.
-	/// If it is the only open text, a new empty one opens first, because closing the last window quits the app.
+	/// Moves a text to the Trash. If it is open, it is saved and closed first.
 	func moveToTrash(_ item: Item) {
-		let controller = NSDocumentController.shared
-		guard let document = controller.document(for: item.url) else {
-			recycle(item)
-			return
+		if let document = NSDocumentController.shared.document(for: item.url) {
+			moveToTrash(document)
+		} else {
+			recycle(item.isDownloaded ? item.url : folderURL.appendingPathComponent(".\(item.url.lastPathComponent).icloud"))
 		}
+	}
+
+	/// Saves and closes an open text, then moves its file, wherever it is by then, to the Trash, so the Trash holds the
+	/// latest writing. If it is the only open text, a new empty one opens first, because closing the last window quits the app.
+	func moveToTrash(_ document: NSDocument) {
+		let controller = NSDocumentController.shared
 		document.autosave(withImplicitCancellability: false) { error in
 			if let error = error {
 				// Keep the text open rather than lose what hasn't been saved.
 				NSApp.presentError(error)
 				return
 			}
+			guard let url = document.fileURL else { return }
 			if controller.documents.count == 1 {
 				controller.newDocument(nil)
 			}
 			document.close()
-			self.recycle(item)
+			self.recycle(url)
 		}
 	}
 
-	private func recycle(_ item: Item) {
-		let trashURL = item.isDownloaded ? item.url : folderURL.appendingPathComponent(".\(item.url.lastPathComponent).icloud")
-		NSWorkspace.shared.recycle([trashURL]) { _, error in
+	private func recycle(_ url: URL) {
+		NSWorkspace.shared.recycle([url]) { _, error in
 			if let error = error {
 				NSApp.presentError(error)
 			}
