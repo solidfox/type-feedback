@@ -32,6 +32,9 @@ class ViewController: NSViewController, NSToolbarDelegate {
 		guard isViewLoaded, let document = representedObject as? Document else { return }
 		textView.layoutManager?.replaceTextStorage(document.textStorage)
 		textView.font = Document.textFont
+		// Continue writing where the text ends, as before documents.
+		textView.setSelectedRange(NSRange(location: document.textStorage.length, length: 0))
+		textView.scrollRangeToVisible(textView.selectedRange())
 	}
 
     

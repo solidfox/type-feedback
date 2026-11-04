@@ -11,6 +11,7 @@ import Foundation
 class AppDefaults {
 	enum keys:String {
 		case textViewContents = "TextViewContents"
+		case legacyTextMigrated = "LegacyTextMigrated"
 		case spellingMode = "SpellingMode"
 	}
 }

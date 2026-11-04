@@ -18,15 +18,17 @@ class Document: NSDocument {
 	/// Set once a document has taken over the legacy text, so later new documents start empty.
 	private static var legacyTextClaimed = false
 	
-	/// True while this document holds text migrated from user defaults that has not been saved yet.
+	/// True while this document holds text taken over from user defaults that has not been saved yet.
 	private var holdsLegacyText = false
 	
 	/// A new untitled document. Versions before the document-based app kept a single text in user defaults;
-	/// the first new document takes it over, and it is removed from user defaults once that document is saved.
+	/// the first new document takes it over. Once that document is saved the text is marked as migrated, but kept
+	/// in user defaults as a backup, because an untitled document can still be deleted from the close dialog.
 	convenience init(type typeName: String) throws {
 		self.init()
 		fileType = typeName
-		if !Document.legacyTextClaimed, let legacyText = NSUserDefaultsController.shared.defaults.string(forKey: AppDefaults.keys.textViewContents.rawValue), !legacyText.isEmpty {
+		let defaults = NSUserDefaultsController.shared.defaults
+		if !Document.legacyTextClaimed, !defaults.bool(forKey: AppDefaults.keys.legacyTextMigrated.rawValue), let legacyText = defaults.string(forKey: AppDefaults.keys.textViewContents.rawValue), !legacyText.isEmpty {
 			Document.legacyTextClaimed = true
 			setText(legacyText)
 			updateChangeCount(.changeDone)
@@ -46,13 +48,13 @@ class Document: NSDocument {
 	}
 
 	override func data(ofType typeName: String) throws -> Data {
-		return textStorage.string.data(using: .utf8)!
+		return Data(textStorage.string.utf8)
 	}
 
 	override func save(to url: URL, ofType typeName: String, for saveOperation: NSDocument.SaveOperationType, completionHandler: @escaping (Error?) -> Void) {
 		super.save(to: url, ofType: typeName, for: saveOperation) { error in
 			if error == nil && self.holdsLegacyText {
-				NSUserDefaultsController.shared.defaults.removeObject(forKey: AppDefaults.keys.textViewContents.rawValue)
+				NSUserDefaultsController.shared.defaults.set(true, forKey: AppDefaults.keys.legacyTextMigrated.rawValue)
 				self.holdsLegacyText = false
 			}
 			completionHandler(error)
