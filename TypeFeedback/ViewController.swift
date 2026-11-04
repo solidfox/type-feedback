@@ -17,20 +17,21 @@ class ViewController: NSViewController, NSToolbarDelegate {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		textView.delegate = textViewDelegate
-		
-		textView.font = NSFont(name: "OpenDyslexic", size: 20)
-		
-		if let textViewContents = NSUserDefaultsController.shared.defaults.string(forKey: "TextViewContents") {
-			textView.string = textViewContents
-		}
-		
-		// Do any additional setup after loading the view.
+
+		showDocumentText()
 	}
 
 	override var representedObject: Any? {
 		didSet {
-		// Update the view, if already loaded.
+			showDocumentText()
 		}
+	}
+	
+	/// Lets the text view edit the document's text storage directly, so the document always holds what is on screen.
+	func showDocumentText() {
+		guard isViewLoaded, let document = representedObject as? Document else { return }
+		textView.layoutManager?.replaceTextStorage(document.textStorage)
+		textView.font = Document.textFont
 	}
 
     
