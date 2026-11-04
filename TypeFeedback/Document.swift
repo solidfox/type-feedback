@@ -184,16 +184,18 @@ class Document: NSDocument {
 	}
 
 	private func renameAutomaticallyIfNeeded() {
-		guard isWrittenInThisSession, !isRenaming, !automaticRenameFailed, !isInViewingMode, let url = fileURL,
+		let library = DocumentLibrary.shared
+		// Only texts in the TypeFeedback folder; a file opened from elsewhere keeps the name it was given.
+		guard isWrittenInThisSession, !isRenaming, !automaticRenameFailed, !isInViewingMode, let url = fileURL, library.contains(url),
 			DocumentNaming.isDateName(url.deletingPathExtension().lastPathComponent),
 			let name = DocumentNaming.name(fromText: textStorage.string) else { return }
 		isRenaming = true
-		let newURL = DocumentLibrary.shared.reserveUnusedURL(named: name, in: url.deletingLastPathComponent())
+		let newURL = library.reserveUnusedURL(named: name)
 		move(to: newURL) { error in
-			DocumentLibrary.shared.releaseURL(newURL)
+			library.releaseURL(newURL)
 			self.isRenaming = false
 			self.automaticRenameFailed = error != nil
-			DocumentLibrary.shared.setNeedsReload()
+			library.setNeedsReload()
 		}
 	}
 	

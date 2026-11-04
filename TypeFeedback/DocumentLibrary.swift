@@ -133,19 +133,18 @@ final class DocumentLibrary {
 
 	/// File names handed out for saves and renames that haven't reached the disk yet. Saving or moving onto an existing
 	/// file replaces it, so two texts named at the same moment must not get the same name.
-	private var reservedURLs = Set<URL>()
+	private var reservedNames = Set<String>()
 
-	/// Reserves a file name in `folder` (the library folder by default) that no other text uses: "Name.txt", "Name 2.txt", …
+	/// Reserves a file name in the folder that no other text uses: "Name.txt", "Name 2.txt", …
 	/// Call `releaseURL` once the save or move into it has finished.
-	func reserveUnusedURL(named name: String, in folder: URL? = nil) -> URL {
-		let folder = folder ?? folderURL
+	func reserveUnusedURL(named name: String) -> URL {
 		var number = 1
 		while true {
 			let fileName = number == 1 ? name : "\(name) \(number)"
-			let url = folder.appendingPathComponent(fileName).appendingPathExtension("txt")
-			let iCloudPlaceholder = folder.appendingPathComponent(".\(url.lastPathComponent).icloud")
-			if !reservedURLs.contains(url.standardizedFileURL) && !FileManager.default.fileExists(atPath: url.path) && !FileManager.default.fileExists(atPath: iCloudPlaceholder.path) {
-				reservedURLs.insert(url.standardizedFileURL)
+			let url = folderURL.appendingPathComponent(fileName).appendingPathExtension("txt")
+			let iCloudPlaceholder = folderURL.appendingPathComponent(".\(url.lastPathComponent).icloud")
+			if !reservedNames.contains(reservationName(url)) && !FileManager.default.fileExists(atPath: url.path) && !FileManager.default.fileExists(atPath: iCloudPlaceholder.path) {
+				reservedNames.insert(reservationName(url))
 				return url
 			}
 			number += 1
@@ -153,7 +152,17 @@ final class DocumentLibrary {
 	}
 
 	func releaseURL(_ url: URL) {
-		reservedURLs.remove(url.standardizedFileURL)
+		reservedNames.remove(reservationName(url))
+	}
+
+	/// The Mac's disk normally treats "Hej.txt" and "hej.txt" (and the two ways of writing "å") as the same file.
+	private func reservationName(_ url: URL) -> String {
+		return url.lastPathComponent.precomposedStringWithCanonicalMapping.lowercased()
+	}
+
+	/// True for a text saved in the TypeFeedback folder, as opposed to one opened from somewhere else.
+	func contains(_ url: URL) -> Bool {
+		return url.deletingLastPathComponent().standardizedFileURL == folderURL.standardizedFileURL && url.pathExtension.lowercased() == "txt"
 	}
 
 	/// Opens a text, or brings its window to the front if it is already open.
