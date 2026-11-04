@@ -52,6 +52,12 @@ class Document: NSDocument {
 	}
 
 	override func save(to url: URL, ofType typeName: String, for saveOperation: NSDocument.SaveOperationType, completionHandler: @escaping (Error?) -> Void) {
+		// A text view merges ongoing typing into one undo step. Typing that continues after a save or autosave would
+		// then never reach the undo manager, so the document would not count it as a change: no "Edited", no
+		// autosave, and the text lost on quit. Start a new undo step for whatever is typed next.
+		for windowController in windowControllers {
+			(windowController.contentViewController as? ViewController)?.textView?.breakUndoCoalescing()
+		}
 		super.save(to: url, ofType: typeName, for: saveOperation) { error in
 			if error == nil && self.holdsLegacyText {
 				NSUserDefaultsController.shared.defaults.set(true, forKey: AppDefaults.keys.legacyTextMigrated.rawValue)

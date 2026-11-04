@@ -712,7 +712,7 @@
                                         </connections>
                                     </segmentedControl>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="F5D04A73-3FDA-4B43-8CFE-52422EB5B6D2" label="Skriv Ut" paletteLabel="Skriv Ut" tag="-1" image="printer" catalog="system" bordered="YES" id="ib0-Kf-OOP">
+                                <toolbarItem implicitItemIdentifier="F5D04A73-3FDA-4B43-8CFE-52422EB5B6D2" label="Skriv Ut" paletteLabel="Skriv Ut" tag="-1" image="printer" catalog="system" bordered="YES" id="ib0-Kf-OOP" customClass="PrintToolbarItem" customModule="TypeFeedback" customModuleProvider="target">
                                     <size key="minSize" width="30" height="25"/>
                                     <size key="maxSize" width="30" height="25"/>
                                     <connections>
