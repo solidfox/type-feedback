@@ -132,7 +132,7 @@
                                         </menuItem>
                                         <menuItem title="Print…" keyEquivalent="p" id="aTl-1u-JFS">
                                             <connections>
-                                                <action selector="printFromMenu:" target="Voe-Tx-rLC" id="GJY-df-mLz"/>
+                                                <action selector="printDocument:" target="Ady-hI-5gd" id="GJY-df-mLz"/>
                                             </connections>
                                         </menuItem>
                                     </items>
@@ -716,7 +716,7 @@
                                     <size key="minSize" width="30" height="25"/>
                                     <size key="maxSize" width="30" height="25"/>
                                     <connections>
-                                        <action selector="print:" target="B8D-0N-5wS" id="5vQ-ch-XyZ"/>
+                                        <action selector="printDocument:" target="Oky-zY-oP4" id="5vQ-ch-XyZ"/>
                                     </connections>
                                 </toolbarItem>
                             </allowedToolbarItems>
