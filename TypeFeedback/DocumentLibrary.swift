@@ -132,7 +132,9 @@ final class DocumentLibrary {
 	}
 
 	/// File names handed out for saves and renames that haven't reached the disk yet. Saving or moving onto an existing
-	/// file replaces it, so two texts named at the same moment must not get the same name.
+	/// file replaces it, so two texts named at the same moment must not get the same name. This guards against the app
+	/// itself; another app creating the very same generated name in that moment is left out on purpose, because claiming
+	/// names with empty placeholder files would flash them in the sidebar and sync them to iCloud.
 	private var reservedNames = Set<String>()
 
 	/// Reserves a file name in the folder that no other text uses: "Name.txt", "Name 2.txt", …
