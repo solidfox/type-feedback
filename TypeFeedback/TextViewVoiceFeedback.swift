@@ -74,11 +74,6 @@ class TextViewVoiceFeedback: NSObject, NSTextViewDelegate {
 		return true
 	}
 	
-	func textDidChange(_ notification: Notification) {
-		let textView = notification.object as! NSTextView
-		NSUserDefaultsController.shared.defaults.set(textView.textStorage?.string, forKey: "TextViewContents")
-	}
-	
 	func findLastWordIn(textView:NSTextView, endingAtIndex endIndex:Int) -> String {
 		let string = textView.textStorage!.string
 		let lowerBound = string.index(string.startIndex, offsetBy: textView.textStorage!.nextWord(from: endIndex, forward: false))
