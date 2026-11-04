@@ -25,11 +25,5 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		return true
 	}
 
-    @IBAction func printFromMenu(_ sender: Any) {
-        if let mainWindowController = NSApp.mainWindow?.windowController as? WindowController {
-            mainWindowController.print(sender)
-        }
-    }
-    
 }
 
