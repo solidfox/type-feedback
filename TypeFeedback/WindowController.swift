@@ -7,7 +7,6 @@
 //
 
 import Cocoa
-import DynamicColor
 
 class WindowController: NSWindowController, NSWindowDelegate {
 	@IBAction func onSpellingSegmentedControlChange(_ sender: NSSegmentedControl) {
@@ -16,32 +15,41 @@ class WindowController: NSWindowController, NSWindowDelegate {
 	}
 	@IBOutlet weak var spellingSegmentedControl: NSSegmentedControl!
 	
+	/// The text side of the window. The window's content is a split view with the documents sidebar beside it.
+	private(set) var textViewController: ViewController?
+	private(set) var splitViewController: DocumentSplitViewController?
+
     override func windowDidLoad() {
         super.windowDidLoad()
 		
 		if let window = window {
-			var darkMode = false
-			
-			if #available(OSX 10.14, *) {
-				darkMode = window.effectiveAppearance.name == .darkAqua
-			}
-			
-			let lightBgHexColor:UInt64 = 0xfcedc7
-			
-			if !darkMode {
-				window.backgroundColor = DynamicColor(hex:lightBgHexColor)
-			} else {
-				window.backgroundColor = DynamicColor(hex:lightBgHexColor).inverted()
-			}
+			window.backgroundColor = Palette.paper
 			window.delegate = self
+			showDocumentsSidebar(in: window)
 		}
 		
 		showSpellingMode()
 		NotificationCenter.default.addObserver(self, selector: #selector(onSpellingModeUpdated(_:)), name: .spellingModeUpdated, object: nil)
-    
-        // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
     }
+
+	/// Puts the text from the storyboard next to the documents sidebar.
+	private func showDocumentsSidebar(in window: NSWindow) {
+		guard let textViewController = contentViewController as? ViewController else { return }
+		self.textViewController = textViewController
+		let textSize = textViewController.view.frame.size
+		let splitViewController = DocumentSplitViewController(textViewController: textViewController)
+		self.splitViewController = splitViewController
+		window.contentViewController = splitViewController
+		let sidebarWidth = splitViewController.isSidebarVisible ? DocumentSplitViewController.sidebarWidth : 0
+		window.setContentSize(NSSize(width: textSize.width + sidebarWidth, height: max(textSize.height, 468)))
+	}
 	
+	/// AppKit calls this whenever the document's file name changes, also when the file is renamed or moved elsewhere.
+	override func synchronizeWindowTitleWithDocumentName() {
+		super.synchronizeWindowTitleWithDocumentName()
+		splitViewController?.sidebarViewController.showCurrentDocument()
+	}
+
 	/// The setting is shared by all windows, so a change in one window updates the others.
 	@objc func onSpellingModeUpdated(_ notification: Notification) {
 		showSpellingMode()

@@ -18,6 +18,9 @@
 		96C03B631E74036A004BAC05 /* WindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C03B621E74036A004BAC05 /* WindowController.swift */; };
 		96D0C0012F0A000100D0C001 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D0C0002F0A000100D0C001 /* Document.swift */; };
 		96D0C0032F0A000100D0C001 /* DocumentPrinting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D0C0022F0A000100D0C001 /* DocumentPrinting.swift */; };
+		96D0C0072F0A000100D0C001 /* DocumentsSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D0C0062F0A000100D0C001 /* DocumentsSidebar.swift */; };
+		96D0C0052F0A000100D0C001 /* DocumentLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D0C0042F0A000100D0C001 /* DocumentLibrary.swift */; };
+		96D0C0092F0A000100D0C001 /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D0C0082F0A000100D0C001 /* Palette.swift */; };
 		96C5B56723D1CE550031566B /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C5B56623D1CE550031566B /* Defaults.swift */; };
 		96C5B56923D1DE350031566B /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C5B56823D1DE350031566B /* Notifications.swift */; };
 		96EC59042254262500A044D6 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 96EC59032254262500A044D6 /* Podfile */; };
@@ -40,6 +43,9 @@
 		96C03B621E74036A004BAC05 /* WindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowController.swift; sourceTree = "<group>"; };
 		96D0C0002F0A000100D0C001 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
 		96D0C0022F0A000100D0C001 /* DocumentPrinting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPrinting.swift; sourceTree = "<group>"; };
+		96D0C0062F0A000100D0C001 /* DocumentsSidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsSidebar.swift; sourceTree = "<group>"; };
+		96D0C0042F0A000100D0C001 /* DocumentLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentLibrary.swift; sourceTree = "<group>"; };
+		96D0C0082F0A000100D0C001 /* Palette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Palette.swift; sourceTree = "<group>"; };
 		96C5B56623D1CE550031566B /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
 		96C5B56823D1DE350031566B /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		96C5B56A23D1E8A90031566B /* TypeFeedback.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TypeFeedback.entitlements; sourceTree = "<group>"; };
@@ -88,6 +94,9 @@
 				96C03B621E74036A004BAC05 /* WindowController.swift */,
 				96D0C0002F0A000100D0C001 /* Document.swift */,
 				96D0C0022F0A000100D0C001 /* DocumentPrinting.swift */,
+				96D0C0062F0A000100D0C001 /* DocumentsSidebar.swift */,
+				96D0C0042F0A000100D0C001 /* DocumentLibrary.swift */,
+				96D0C0082F0A000100D0C001 /* Palette.swift */,
 				96C5B56623D1CE550031566B /* Defaults.swift */,
 				96C5B56823D1DE350031566B /* Notifications.swift */,
 				965A3FCE23D1B66300C6A961 /* PhonemPlayer.swift */,
@@ -239,6 +248,9 @@
 				96C03B631E74036A004BAC05 /* WindowController.swift in Sources */,
 				96D0C0012F0A000100D0C001 /* Document.swift in Sources */,
 				96D0C0032F0A000100D0C001 /* DocumentPrinting.swift in Sources */,
+				96D0C0072F0A000100D0C001 /* DocumentsSidebar.swift in Sources */,
+				96D0C0052F0A000100D0C001 /* DocumentLibrary.swift in Sources */,
+				96D0C0092F0A000100D0C001 /* Palette.swift in Sources */,
 				96B785CF1E72D42A00ECABBC /* ViewController.swift in Sources */,
 				96C5B56723D1CE550031566B /* Defaults.swift in Sources */,
 				96B785CD1E72D42A00ECABBC /* AppDelegate.swift in Sources */,

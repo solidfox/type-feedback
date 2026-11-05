@@ -691,6 +691,7 @@
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
                         <toolbar key="toolbar" implicitIdentifier="2CF4E7B0-164C-4443-B3BA-41D1B5D6A48D" autosavesConfiguration="NO" displayMode="iconOnly" sizeMode="regular" id="uiu-z0-QMo">
                             <allowedToolbarItems>
+                                <toolbarItem implicitItemIdentifier="NSToolbarToggleSidebarItem" id="sBt-gl-Tg1"/>
                                 <toolbarItem implicitItemIdentifier="NSToolbarShowColorsItem" id="JZL-p6-3Dc"/>
                                 <toolbarItem implicitItemIdentifier="NSToolbarShowFontsItem" id="CRW-Kq-LeF"/>
                                 <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="k6V-of-0gg"/>
@@ -721,6 +722,7 @@
                                 </toolbarItem>
                             </allowedToolbarItems>
                             <defaultToolbarItems>
+                                <toolbarItem reference="sBt-gl-Tg1"/>
                                 <toolbarItem reference="3ne-qP-KYJ"/>
                                 <toolbarItem reference="ib0-Kf-OOP"/>
                                 <toolbarItem reference="ngz-J5-soO"/>

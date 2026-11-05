@@ -13,5 +13,6 @@ class AppDefaults {
 		case textViewContents = "TextViewContents"
 		case legacyTextMigrated = "LegacyTextMigrated"
 		case spellingMode = "SpellingMode"
+		case sidebarHidden = "SidebarHidden"
 	}
 }

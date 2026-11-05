@@ -10,7 +10,11 @@ import Cocoa
 
 class Document: NSDocument {
 
-	static let textFont = NSFont(name: "OpenDyslexic", size: 20) ?? NSFont.systemFont(ofSize: 20)
+	static let textFont = font(size: 20)
+
+	static func font(size: CGFloat) -> NSFont {
+		return NSFont(name: "OpenDyslexic", size: size) ?? NSFont.systemFont(ofSize: size)
+	}
 
 	/// The document's text. Every window showing this document edits this storage directly.
 	let textStorage = NSTextStorage()
@@ -20,6 +24,21 @@ class Document: NSDocument {
 	
 	/// True while this document holds text taken over from user defaults that has not been saved yet.
 	private var holdsLegacyText = false
+
+	/// True while text is being loaded from a file rather than written.
+	private var isReadingText = false
+	/// True once someone has written in this document since it was opened.
+	private var isWrittenInThisSession = false
+	private var isFilingScheduled = false
+	private var isRenaming = false
+	private var automaticRenameFailed = false
+	/// Completion handlers waiting for the save into the TypeFeedback folder; nil when no such save is running.
+	private var librarySaveHandlers: [(Error?) -> Void]?
+
+	override init() {
+		super.init()
+		NotificationCenter.default.addObserver(self, selector: #selector(documentTextDidChange(_:)), name: NSTextStorage.didProcessEditingNotification, object: textStorage)
+	}
 	
 	/// A new untitled document. Versions before the document-based app kept a single text in user defaults;
 	/// the first new document takes it over. Once that document is saved the text is marked as migrated, but kept
@@ -44,7 +63,7 @@ class Document: NSDocument {
 		let storyboard = NSStoryboard(name: "Main", bundle: nil)
 		let windowController = storyboard.instantiateController(withIdentifier: "Document Window Controller") as! WindowController
 		addWindowController(windowController)
-		windowController.contentViewController?.representedObject = self
+		windowController.textViewController?.representedObject = self
 	}
 
 	override func data(ofType typeName: String) throws -> Data {
@@ -55,15 +74,146 @@ class Document: NSDocument {
 		// A text view merges ongoing typing into one undo step. Typing that continues after a save or autosave would
 		// then never reach the undo manager, so the document would not count it as a change: no "Edited", no
 		// autosave, and the text lost on quit. Start a new undo step for whatever is typed next.
-		for windowController in windowControllers {
-			(windowController.contentViewController as? ViewController)?.textView?.breakUndoCoalescing()
+		for case let windowController as WindowController in windowControllers {
+			windowController.textViewController?.textView?.breakUndoCoalescing()
 		}
 		super.save(to: url, ofType: typeName, for: saveOperation) { error in
 			if error == nil && self.holdsLegacyText {
 				NSUserDefaultsController.shared.defaults.set(true, forKey: AppDefaults.keys.legacyTextMigrated.rawValue)
 				self.holdsLegacyText = false
 			}
+			DocumentLibrary.shared.setNeedsReload()
 			completionHandler(error)
+		}
+	}
+
+	// MARK: Saving new texts without asking
+
+	/// New texts are saved straight into the TypeFeedback folder, so nobody meets a Save dialog and a new text can't be
+	/// thrown away from the close or quit dialog. Autosave normally keeps untitled documents elsewhere; save them there instead.
+	override func autosave(withImplicitCancellability autosavingIsImplicitlyCancellable: Bool, completionHandler: @escaping (Error?) -> Void) {
+		if needsSavingToLibrary {
+			saveToLibrary(completionHandler: completionHandler)
+		} else {
+			super.autosave(withImplicitCancellability: autosavingIsImplicitlyCancellable, completionHandler: completionHandler)
+		}
+	}
+
+	/// File › Save on a new text saves it into the folder instead of asking where.
+	override func save(_ sender: Any?) {
+		if fileURL == nil && !isInViewingMode {
+			saveToLibrary { error in
+				if let error = error {
+					self.presentError(error)
+				}
+			}
+		} else {
+			super.save(sender)
+		}
+	}
+
+	/// Closing or quitting saves a new text first, so AppKit never asks whether to keep or delete it.
+	override func canClose(withDelegate delegate: Any, shouldClose shouldCloseSelector: Selector?, contextInfo: UnsafeMutableRawPointer?) {
+		if fileURL == nil && !isInViewingMode {
+			if isBlank {
+				// Nothing was written, so there is nothing to keep.
+				updateChangeCount(.changeCleared)
+			} else {
+				saveToLibrary { _ in
+					// If saving failed, AppKit's own dialog still lets the text be saved somewhere else.
+					super.canClose(withDelegate: delegate, shouldClose: shouldCloseSelector, contextInfo: contextInfo)
+				}
+				return
+			}
+		}
+		super.canClose(withDelegate: delegate, shouldClose: shouldCloseSelector, contextInfo: contextInfo)
+	}
+
+	private var needsSavingToLibrary: Bool {
+		return fileURL == nil && !isBlank && !isInViewingMode
+	}
+
+	/// True when the text holds nothing but spaces and new lines.
+	private var isBlank: Bool {
+		return textStorage.string.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+	}
+
+	/// An empty text in the TypeFeedback folder was saved automatically and then wiped, so when its window closes the
+	/// file is deleted instead of staying in the list as an empty text.
+	override func close() {
+		// A rename still waiting must not move the file after the document is gone.
+		NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(fileTextAutomatically), object: nil)
+		isFilingScheduled = false
+		let blankFileURL = isBlank && !isInViewingMode ? fileURL : nil
+		super.close()
+		if let url = blankFileURL {
+			DocumentLibrary.shared.deleteIfBlank(url)
+		}
+	}
+
+	/// Saves a new text into the TypeFeedback folder, named after its first words if they are written already, otherwise by date.
+	private func saveToLibrary(completionHandler: @escaping (Error?) -> Void) {
+		if librarySaveHandlers != nil {
+			librarySaveHandlers?.append(completionHandler)
+			return
+		}
+		librarySaveHandlers = [completionHandler]
+		let finish = { (error: Error?) in
+			let handlers = self.librarySaveHandlers ?? []
+			self.librarySaveHandlers = nil
+			handlers.forEach { $0(error) }
+		}
+		let library = DocumentLibrary.shared
+		do {
+			try library.createFolder()
+		} catch {
+			finish(error)
+			return
+		}
+		let name = DocumentNaming.name(fromText: textStorage.string) ?? DocumentNaming.dateName()
+		let url = library.reserveUnusedURL(named: name)
+		save(to: url, ofType: fileType ?? "public.plain-text", for: .saveAsOperation) { error in
+			library.releaseURL(url)
+			finish(error)
+		}
+	}
+
+	@objc private func documentTextDidChange(_ notification: Notification) {
+		guard !isReadingText, textStorage.editedMask.contains(.editedCharacters) else { return }
+		isWrittenInThisSession = true
+		if !isFilingScheduled {
+			isFilingScheduled = true
+			// A moment later, so the edit has been counted as a change and a burst of typing is handled once.
+			perform(#selector(fileTextAutomatically), with: nil, afterDelay: 1)
+		}
+	}
+
+	/// Saves a new text into the folder as soon as something is written in it, and gives a date-named text its
+	/// real name once its first sentence is written. That rename happens once; after that the name stays.
+	@objc private func fileTextAutomatically() {
+		isFilingScheduled = false
+		if fileURL == nil {
+			if needsSavingToLibrary && isDocumentEdited {
+				saveToLibrary { _ in }
+			}
+		} else {
+			renameAutomaticallyIfNeeded()
+		}
+	}
+
+	private func renameAutomaticallyIfNeeded() {
+		let library = DocumentLibrary.shared
+		// Only texts in the TypeFeedback folder; a file opened from elsewhere keeps the name it was given.
+		guard isWrittenInThisSession, !isRenaming, !automaticRenameFailed, !isInViewingMode, let url = fileURL, library.contains(url),
+			DocumentNaming.isDateName(url.deletingPathExtension().lastPathComponent),
+			let name = DocumentNaming.name(fromText: textStorage.string) else { return }
+		isRenaming = true
+		let newURL = library.reserveUnusedURL(named: name)
+		move(to: newURL) { error in
+			library.releaseURL(newURL)
+			self.isRenaming = false
+			self.automaticRenameFailed = error != nil
+			library.setNeedsReload()
 		}
 	}
 	
@@ -82,7 +232,9 @@ class Document: NSDocument {
 		guard let decodedText = text else {
 			throw CocoaError(.fileReadInapplicableStringEncoding)
 		}
+		isReadingText = true
 		setText(decodedText)
+		isReadingText = false
 	}
 
 	func setText(_ text: String) {
