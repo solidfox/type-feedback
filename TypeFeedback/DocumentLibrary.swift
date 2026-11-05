@@ -169,14 +169,14 @@ final class DocumentLibrary {
 	}
 
 	/// Deletes a text in the folder for good, but only if its file holds nothing but spaces and new lines.
-	/// Any other file, or a file outside the folder, is left alone.
+	/// Any other file, or a file outside the folder, is left alone. Only UTF-8 counts, because that is what the app
+	/// writes; a blank file in another encoding came from elsewhere and is kept.
 	func deleteIfBlank(_ url: URL) {
 		guard contains(url) else { return }
 		var coordinationError: NSError?
 		NSFileCoordinator(filePresenter: nil).coordinate(writingItemAt: url, options: .forDeleting, error: &coordinationError) { url in
 			guard contains(url),
-				let values = try? url.resourceValues(forKeys: [.isRegularFileKey, .fileSizeKey]),
-				values.isRegularFile == true, (values.fileSize ?? Int.max) <= 4096,
+				(try? url.resourceValues(forKeys: [.isRegularFileKey]))?.isRegularFile == true,
 				let data = try? Data(contentsOf: url),
 				let text = String(data: data, encoding: .utf8),
 				text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
