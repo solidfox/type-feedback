@@ -622,8 +622,14 @@
                                                 <action selector="toggleSidebar:" target="Ady-hI-5gd" id="iwa-gc-5KM"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Enter Full Screen" keyEquivalent="f" id="4J7-dP-txa">
+                                        <menuItem title="Fokusläge" keyEquivalent="f" id="Fcs-Mn-8Qd">
                                             <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
+                                            <connections>
+                                                <action selector="toggleFocusMode:" target="Ady-hI-5gd" id="Fcs-Ac-3Lw"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Enter Full Screen" hidden="YES" id="4J7-dP-txa">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="toggleFullScreen:" target="Ady-hI-5gd" id="dU3-MA-1Rq"/>
                                             </connections>
@@ -720,10 +726,18 @@
                                         <action selector="printDocument:" target="Oky-zY-oP4" id="5vQ-ch-XyZ"/>
                                     </connections>
                                 </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="3B8E6F21-5C4A-4D7E-9A13-6E2F8B0C4D57" label="Fokusläge" paletteLabel="Fokusläge" toolTip="Skriv i helskärm, utan något runt texten (⌃⌘F)" tag="-1" image="NSEnterFullScreenTemplate" bordered="YES" id="Fcs-Tb-5Kp">
+                                    <size key="minSize" width="30" height="25"/>
+                                    <size key="maxSize" width="30" height="25"/>
+                                    <connections>
+                                        <action selector="toggleFocusMode:" target="Oky-zY-oP4" id="Fcs-Ta-7Wn"/>
+                                    </connections>
+                                </toolbarItem>
                             </allowedToolbarItems>
                             <defaultToolbarItems>
                                 <toolbarItem reference="sBt-gl-Tg1"/>
                                 <toolbarItem reference="3ne-qP-KYJ"/>
+                                <toolbarItem reference="Fcs-Tb-5Kp"/>
                                 <toolbarItem reference="ib0-Kf-OOP"/>
                                 <toolbarItem reference="ngz-J5-soO"/>
                             </defaultToolbarItems>
@@ -760,7 +774,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="440" height="230"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <textView drawsBackground="NO" importsGraphics="NO" verticallyResizable="YES" usesFontPanel="YES" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="84l-X9-FdH">
+                                        <textView drawsBackground="NO" importsGraphics="NO" verticallyResizable="YES" usesFontPanel="YES" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="84l-X9-FdH" customClass="WritingTextView" customModule="TypeFeedback" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="440" height="230"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -805,6 +819,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="NSEnterFullScreenTemplate" width="15" height="15"/>
         <image name="printer" catalog="system" width="18" height="16"/>
     </resources>
 </document>
