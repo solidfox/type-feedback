@@ -149,3 +149,13 @@ class PrintToolbarItem: NSToolbarItem {
 		return image
 	}()
 }
+
+/// The toolbar's "Till Pages" button. Its image is an SF Symbol, which macOS before 11 does not have,
+/// so older Macs get the system share image instead.
+class SendToPagesToolbarItem: NSToolbarItem {
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		if #available(macOS 11.0, *) { return }
+		image = NSImage(named: NSImage.shareTemplateName)
+	}
+}

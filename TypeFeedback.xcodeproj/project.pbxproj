@@ -18,6 +18,7 @@
 		96C03B631E74036A004BAC05 /* WindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C03B621E74036A004BAC05 /* WindowController.swift */; };
 		96D0C0012F0A000100D0C001 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D0C0002F0A000100D0C001 /* Document.swift */; };
 		96D0C0032F0A000100D0C001 /* DocumentPrinting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D0C0022F0A000100D0C001 /* DocumentPrinting.swift */; };
+		A7E5D0022F0B000100E0D001 /* DocumentSendToPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E5D0012F0B000100E0D001 /* DocumentSendToPages.swift */; };
 		96D0C0072F0A000100D0C001 /* DocumentsSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D0C0062F0A000100D0C001 /* DocumentsSidebar.swift */; };
 		96D0C0052F0A000100D0C001 /* DocumentLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D0C0042F0A000100D0C001 /* DocumentLibrary.swift */; };
 		96D0C0092F0A000100D0C001 /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D0C0082F0A000100D0C001 /* Palette.swift */; };
@@ -44,6 +45,7 @@
 		96C03B621E74036A004BAC05 /* WindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowController.swift; sourceTree = "<group>"; };
 		96D0C0002F0A000100D0C001 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
 		96D0C0022F0A000100D0C001 /* DocumentPrinting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPrinting.swift; sourceTree = "<group>"; };
+		A7E5D0012F0B000100E0D001 /* DocumentSendToPages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentSendToPages.swift; sourceTree = "<group>"; };
 		96D0C0062F0A000100D0C001 /* DocumentsSidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsSidebar.swift; sourceTree = "<group>"; };
 		96D0C0042F0A000100D0C001 /* DocumentLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentLibrary.swift; sourceTree = "<group>"; };
 		96D0C0082F0A000100D0C001 /* Palette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Palette.swift; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 				96C03B621E74036A004BAC05 /* WindowController.swift */,
 				96D0C0002F0A000100D0C001 /* Document.swift */,
 				96D0C0022F0A000100D0C001 /* DocumentPrinting.swift */,
+				A7E5D0012F0B000100E0D001 /* DocumentSendToPages.swift */,
 				96D0C0062F0A000100D0C001 /* DocumentsSidebar.swift */,
 				96D0C0042F0A000100D0C001 /* DocumentLibrary.swift */,
 				96D0C0082F0A000100D0C001 /* Palette.swift */,
@@ -251,6 +254,7 @@
 				96C03B631E74036A004BAC05 /* WindowController.swift in Sources */,
 				96D0C0012F0A000100D0C001 /* Document.swift in Sources */,
 				96D0C0032F0A000100D0C001 /* DocumentPrinting.swift in Sources */,
+				A7E5D0022F0B000100E0D001 /* DocumentSendToPages.swift in Sources */,
 				96D0C0072F0A000100D0C001 /* DocumentsSidebar.swift in Sources */,
 				96D0C0052F0A000100D0C001 /* DocumentLibrary.swift in Sources */,
 				96D0C0092F0A000100D0C001 /* Palette.swift in Sources */,

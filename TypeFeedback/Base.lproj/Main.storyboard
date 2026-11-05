@@ -135,6 +135,13 @@
                                                 <action selector="printDocument:" target="Ady-hI-5gd" id="GJY-df-mLz"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="sTp-Sp-4Mn"/>
+                                        <menuItem title="Skicka till Pages" id="sTp-Mi-8Qw">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="sendToPages:" target="Ady-hI-5gd" id="sTp-Ac-2Lk"/>
+                                            </connections>
+                                        </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>
@@ -733,11 +740,19 @@
                                         <action selector="toggleFocusMode:" target="Oky-zY-oP4" id="Fcs-Ta-7Wn"/>
                                     </connections>
                                 </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="7D2A9C4E-1B6F-4E83-A5D0-3C8F2E9B6A14" label="Till Pages" paletteLabel="Skicka till Pages" toolTip="Öppna en kopia av texten i Pages, för att göra den fin och lämna in den" tag="-1" image="square.and.arrow.up" catalog="system" bordered="YES" id="sTp-Tb-6Rv" customClass="SendToPagesToolbarItem" customModule="TypeFeedback" customModuleProvider="target">
+                                    <size key="minSize" width="30" height="25"/>
+                                    <size key="maxSize" width="30" height="25"/>
+                                    <connections>
+                                        <action selector="sendToPages:" target="Oky-zY-oP4" id="sTp-Ta-9Xc"/>
+                                    </connections>
+                                </toolbarItem>
                             </allowedToolbarItems>
                             <defaultToolbarItems>
                                 <toolbarItem reference="sBt-gl-Tg1"/>
                                 <toolbarItem reference="3ne-qP-KYJ"/>
                                 <toolbarItem reference="Fcs-Tb-5Kp"/>
+                                <toolbarItem reference="sTp-Tb-6Rv"/>
                                 <toolbarItem reference="ib0-Kf-OOP"/>
                                 <toolbarItem reference="ngz-J5-soO"/>
                             </defaultToolbarItems>
@@ -821,5 +836,6 @@
     <resources>
         <image name="NSEnterFullScreenTemplate" width="15" height="15"/>
         <image name="printer" catalog="system" width="18" height="16"/>
+        <image name="square.and.arrow.up" catalog="system" width="15" height="17"/>
     </resources>
 </document>
