@@ -41,6 +41,8 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
+	<key>NSAppleEventsUsageDescription</key>
+	<string>TypeFeedback öppnar Pages och skapar ett nytt dokument med din text, så att du kan göra den fin och lämna in den.</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2017 Daniel Schlaug. All rights reserved.</string>
 	<key>NSMainStoryboardFile</key>
