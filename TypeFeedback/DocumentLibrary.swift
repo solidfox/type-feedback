@@ -164,7 +164,8 @@ final class DocumentLibrary {
 
 	/// True for a text saved in the TypeFeedback folder, as opposed to one opened from somewhere else.
 	func contains(_ url: URL) -> Bool {
-		return url.deletingLastPathComponent().standardizedFileURL == folderURL.standardizedFileURL && url.pathExtension.lowercased() == "txt"
+		// Resolving links, so a text reached through iCloud Drive's link to the Documents folder still counts.
+		return url.deletingLastPathComponent().resolvingSymlinksInPath() == folderURL.resolvingSymlinksInPath() && url.pathExtension.lowercased() == "txt"
 	}
 
 	/// Opens a text, or brings its window to the front if it is already open.
@@ -225,10 +226,12 @@ final class DocumentLibrary {
 
 	private func recycle(_ url: URL) {
 		NSWorkspace.shared.recycle([url]) { _, error in
-			if let error = error {
-				NSApp.presentError(error)
+			DispatchQueue.main.async {
+				if let error = error {
+					NSApp.presentError(error)
+				}
+				self.setNeedsReload()
 			}
-			self.setNeedsReload()
 		}
 	}
 }
