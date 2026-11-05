@@ -168,6 +168,23 @@ final class DocumentLibrary {
 		return url.deletingLastPathComponent().resolvingSymlinksInPath() == folderURL.resolvingSymlinksInPath() && url.pathExtension.lowercased() == "txt"
 	}
 
+	/// Deletes a text in the folder for good, but only if its file holds nothing but spaces and new lines.
+	/// Any other file, or a file outside the folder, is left alone.
+	func deleteIfBlank(_ url: URL) {
+		guard contains(url) else { return }
+		var coordinationError: NSError?
+		NSFileCoordinator(filePresenter: nil).coordinate(writingItemAt: url, options: .forDeleting, error: &coordinationError) { url in
+			guard contains(url),
+				let values = try? url.resourceValues(forKeys: [.isRegularFileKey, .fileSizeKey]),
+				values.isRegularFile == true, (values.fileSize ?? Int.max) <= 4096,
+				let data = try? Data(contentsOf: url),
+				let text = String(data: data, encoding: .utf8),
+				text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+			try? FileManager.default.removeItem(at: url)
+		}
+		setNeedsReload()
+	}
+
 	/// Opens a text, or brings its window to the front if it is already open.
 	func open(_ item: Item) {
 		guard !item.isDownloaded else {
@@ -220,7 +237,10 @@ final class DocumentLibrary {
 				controller.newDocument(nil)
 			}
 			document.close()
-			self.recycle(url)
+			// Closing deletes an empty text outright; then there is nothing left to trash.
+			if FileManager.default.fileExists(atPath: url.path) {
+				self.recycle(url)
+			}
 		}
 	}
 

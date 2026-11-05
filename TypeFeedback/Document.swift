@@ -115,7 +115,7 @@ class Document: NSDocument {
 	/// Closing or quitting saves a new text first, so AppKit never asks whether to keep or delete it.
 	override func canClose(withDelegate delegate: Any, shouldClose shouldCloseSelector: Selector?, contextInfo: UnsafeMutableRawPointer?) {
 		if fileURL == nil && !isInViewingMode {
-			if textStorage.length == 0 {
+			if isBlank {
 				// Nothing was written, so there is nothing to keep.
 				updateChangeCount(.changeCleared)
 			} else {
@@ -130,7 +130,25 @@ class Document: NSDocument {
 	}
 
 	private var needsSavingToLibrary: Bool {
-		return fileURL == nil && textStorage.length > 0 && !isInViewingMode
+		return fileURL == nil && !isBlank && !isInViewingMode
+	}
+
+	/// True when the text holds nothing but spaces and new lines.
+	private var isBlank: Bool {
+		return textStorage.string.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+	}
+
+	/// An empty text in the TypeFeedback folder was saved automatically and then wiped, so when its window closes the
+	/// file is deleted instead of staying in the list as an empty text.
+	override func close() {
+		// A rename still waiting must not move the file after the document is gone.
+		NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(fileTextAutomatically), object: nil)
+		isFilingScheduled = false
+		let blankFileURL = isBlank && !isInViewingMode ? fileURL : nil
+		super.close()
+		if let url = blankFileURL {
+			DocumentLibrary.shared.deleteIfBlank(url)
+		}
 	}
 
 	/// Saves a new text into the TypeFeedback folder, named after its first words if they are written already, otherwise by date.
