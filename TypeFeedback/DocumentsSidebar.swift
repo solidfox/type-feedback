@@ -97,13 +97,24 @@ final class DocumentsSidebarViewController: NSViewController, NSTableViewDataSou
 		menu.addItem(withTitle: "Flytta till papperskorgen…", action: #selector(moveClickedDocumentToTrash(_:)), keyEquivalent: "").target = self
 		tableView.menu = menu
 
+		// The same as File › New and ⌘N, where a child can see it.
+		let newTextButton = NSButton(title: "Ny text", target: NSDocumentController.shared, action: #selector(NSDocumentController.newDocument(_:)))
+		newTextButton.bezelStyle = .regularSquare
+		newTextButton.image = NSImage(named: NSImage.addTemplateName)
+		newTextButton.imagePosition = .imageLeading
+		newTextButton.font = Document.font(size: 15)
+		newTextButton.toolTip = "Börja på en ny text (⌘N)"
+		newTextButton.refusesFirstResponder = true
+		newTextButton.translatesAutoresizingMaskIntoConstraints = false
+		background.addSubview(newTextButton)
+
 		let scrollView = NSScrollView()
 		scrollView.documentView = tableView
 		scrollView.drawsBackground = false
 		scrollView.hasVerticalScroller = true
 		scrollView.autohidesScrollers = true
 		scrollView.automaticallyAdjustsContentInsets = false
-		scrollView.contentInsets = NSEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
+		scrollView.contentInsets = NSEdgeInsets(top: 4, left: 0, bottom: 10, right: 0)
 		scrollView.translatesAutoresizingMaskIntoConstraints = false
 		background.addSubview(scrollView)
 
@@ -114,13 +125,17 @@ final class DocumentsSidebarViewController: NSViewController, NSTableViewDataSou
 		background.addSubview(emptyLabel)
 
 		NSLayoutConstraint.activate([
-			scrollView.topAnchor.constraint(equalTo: background.topAnchor),
+			newTextButton.topAnchor.constraint(equalTo: background.topAnchor, constant: 12),
+			newTextButton.leadingAnchor.constraint(equalTo: background.leadingAnchor, constant: 12),
+			newTextButton.trailingAnchor.constraint(equalTo: background.trailingAnchor, constant: -12),
+			newTextButton.heightAnchor.constraint(equalToConstant: 36),
+			scrollView.topAnchor.constraint(equalTo: newTextButton.bottomAnchor, constant: 8),
 			scrollView.bottomAnchor.constraint(equalTo: background.bottomAnchor),
 			scrollView.leadingAnchor.constraint(equalTo: background.leadingAnchor),
 			scrollView.trailingAnchor.constraint(equalTo: background.trailingAnchor),
 			emptyLabel.leadingAnchor.constraint(equalTo: background.leadingAnchor, constant: 20),
 			emptyLabel.trailingAnchor.constraint(equalTo: background.trailingAnchor, constant: -20),
-			emptyLabel.topAnchor.constraint(equalTo: background.topAnchor, constant: 40),
+			emptyLabel.topAnchor.constraint(equalTo: newTextButton.bottomAnchor, constant: 30),
 		])
 		background.frame = NSRect(x: 0, y: 0, width: DocumentSplitViewController.sidebarWidth, height: 400)
 		view = background
