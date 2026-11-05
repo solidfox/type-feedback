@@ -58,6 +58,67 @@ class WindowController: NSWindowController, NSWindowDelegate {
 	func showSpellingMode() {
 		spellingSegmentedControl.selectedSegment = (NSUserDefaultsController.shared.defaults.integer(forKey: AppDefaults.keys.spellingMode.rawValue))
 	}
+
+	// MARK: Focus mode
+
+	/// Whether the sidebar was showing before focus mode, so leaving focus mode puts it back.
+	/// AppKit itself puts the window back where it was, at the same size.
+	private var sidebarWasVisible = false
+
+	private var isInFocusMode: Bool {
+		return window?.styleMask.contains(.fullScreen) ?? false
+	}
+
+	/// View › Fokusläge, ⌃⌘F and the toolbar button. Focus mode is the window's full screen; see FocusLayout.
+	@IBAction func toggleFocusMode(_ sender: Any?) {
+		window?.toggleFullScreen(sender)
+	}
+
+	@objc func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
+		if menuItem.action == #selector(toggleFocusMode(_:)) {
+			menuItem.state = isInFocusMode ? .on : .off
+		}
+		return true
+	}
+
+	@objc func validateToolbarItem(_ item: NSToolbarItem) -> Bool {
+		if item.action == #selector(toggleFocusMode(_:)) {
+			item.image = NSImage(named: isInFocusMode ? NSImage.exitFullScreenTemplateName : NSImage.enterFullScreenTemplateName)
+		}
+		return true
+	}
+
+	/// In focus mode the toolbar and menu bar stay out of sight until the pointer touches the top of the screen.
+	func window(_ window: NSWindow, willUseFullScreenPresentationOptions proposedOptions: NSApplication.PresentationOptions = []) -> NSApplication.PresentationOptions {
+		return proposedOptions.union([.fullScreen, .autoHideMenuBar, .autoHideToolbar])
+	}
+
+	func windowWillEnterFullScreen(_ notification: Notification) {
+		guard let splitViewController = splitViewController else { return }
+		sidebarWasVisible = splitViewController.isSidebarVisible
+		splitViewController.setSidebarVisible(false, animated: false)
+		textViewController?.isFocused = true
+	}
+
+	func windowDidEnterFullScreen(_ notification: Notification) {
+		guard let textView = textViewController?.textView else { return }
+		window?.makeFirstResponder(textView)
+		textView.scrollRangeToVisible(textView.selectedRange())
+	}
+
+	func windowWillExitFullScreen(_ notification: Notification) {
+		leaveFocusMode()
+	}
+
+	func windowDidFailToEnterFullScreen(_ window: NSWindow) {
+		leaveFocusMode()
+	}
+
+	private func leaveFocusMode() {
+		guard textViewController?.isFocused == true else { return }
+		textViewController?.isFocused = false
+		splitViewController?.setSidebarVisible(sidebarWasVisible, animated: false)
+	}
 }
 
 /// The toolbar's print button. Its "printer" image is an SF Symbol, which macOS before 11 does not have,
